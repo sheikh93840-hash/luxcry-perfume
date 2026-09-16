@@ -1,44 +1,23 @@
-const API_URL='https://v2.jokeapi.dev/joke/Any?type=twopart,single&safe-mode';
-let served=0;
-const button=document.querySelector('#new-joke-button');
-const content=document.querySelector('#joke-content');
-const category=document.querySelector('#category');
-const loader=document.querySelector('#loader');
-const errorMessage=document.querySelector('#error-message');
-const count=document.querySelector('#joke-count');
-const copyButton=document.querySelector('#copy-button');
-let currentJoke='';
-
-function setLoading(isLoading){
-  loader.hidden=!isLoading;
-  button.disabled=isLoading;
-  errorMessage.hidden=true;
-}
-function showJoke(data){
-  currentJoke=data.type==='single'?data.joke:`${data.setup}\n\n${data.delivery}`;
-  content.innerHTML=data.type==='single'
-    ?`<div class="emoji">🤣</div><p class="joke-text">${escapeHtml(data.joke)}</p>`
-    :`<div class="emoji">😄</div><p class="joke-text">${escapeHtml(data.setup)}</p><p class="delivery">${escapeHtml(data.delivery)}</p>`;
-  category.textContent=`${data.category.toUpperCase()} · ${data.type==='single'?'ONE-LINER':'TWO-PART'}`;
-  served+=1;
-  count.textContent=`${served} joke${served===1?'':'s'} served`;
-}
-function escapeHtml(value){const div=document.createElement('div');div.textContent=value;return div.innerHTML}
-async function getJoke(){
-  setLoading(true);
-  try{
-    const response=await fetch(API_URL,{headers:{Accept:'application/json'}});
-    if(!response.ok)throw new Error('Request failed');
-    const data=await response.json();
-    if(data.error)throw new Error(data.message||'API error');
-    showJoke(data);
-  }catch(error){
-    errorMessage.hidden=false;
-    category.textContent='TEMPORARILY OFFLINE';
-  }finally{setLoading(false)}
-}
-button.addEventListener('click',getJoke);
-copyButton.addEventListener('click',async()=>{
-  if(!currentJoke)return;
-  try{await navigator.clipboard.writeText(currentJoke);copyButton.textContent='✓';setTimeout(()=>copyButton.textContent='⧉',1400)}catch{copyButton.textContent='!'}
-});
+const products=[
+{id:1,name:'Élan',desc:'Amber · Soft woods · Vanilla',price:6800,category:'woody',class:'',tag:'signature'},
+{id:2,name:'Santal Veil',desc:'Sandalwood · Fig · Musk',price:7200,category:'woody',class:'visual-2',tag:''},
+{id:3,name:'Petale',desc:'Peony · Lychee · White musk',price:5900,category:'floral',class:'visual-3',tag:'new'},
+{id:4,name:'Noor',desc:'Bergamot · Rose · Oud',price:8500,category:'floral',class:'visual-4',tag:'best'},
+{id:5,name:'Côte d’Azur',desc:'Neroli · Sea salt · Cedar',price:6400,category:'fresh',class:'visual-5',tag:''},
+{id:6,name:'Velour',desc:'Tonka · Cashmere · Amber',price:7500,category:'woody',class:'visual-6',tag:''},
+{id:7,name:'Maison Rose',desc:'Saffron · Damask rose · Amber',price:7900,category:'floral',class:'visual-3',tag:'new'},
+{id:8,name:'Lumière',desc:'Pear · Jasmine · White woods',price:6100,category:'fresh',class:'visual-2',tag:''}
+];
+let cart=JSON.parse(localStorage.getItem('luxuryJCart')||'[]');
+const money=n=>`PKR ${n.toLocaleString('en-PK')}`;
+function bottleMarkup(p,small=false){return `<div class="mini-bottle ${small?'small':''}"><div class="cap"></div><div class="bottle-body"><span>LUXURY J.</span><strong>${p.name.toUpperCase()}</strong><small>EAU DE PARFUM</small></div></div>`}
+function card(p){return `<article class="product-card"><div class="product-visual ${p.class}">${bottleMarkup(p)}${p.tag?`<span class="card-tag">${p.tag}</span>`:''}</div><div class="product-info"><div><h3 class="product-name">${p.name}</h3><p class="product-desc">${p.desc}</p></div><span class="price">${money(p.price)}</span></div><div class="card-actions"><button class="add-btn" data-id="${p.id}">Add to bag +</button><button class="quick-view" data-id="${p.id}">Quick view</button></div></article>`}
+function render(target,items){document.querySelector(target).innerHTML=items.map(card).join('');document.querySelectorAll(`${target} .add-btn`).forEach(b=>b.onclick=()=>add(+b.dataset.id));document.querySelectorAll(`${target} .quick-view`).forEach(b=>b.onclick=()=>showToast('Quick view coming soon — add it to your bag to make it yours.'))}
+render('#featured-products',products.slice(0,4));render('#best-products',products.slice(4,8));render('#shop-products',products);
+function add(id){const existing=cart.find(x=>x.id===id);existing?existing.qty++:cart.push({id,qty:1});save();showToast(`${products.find(x=>x.id===id).name} added to your bag`)}
+function save(){localStorage.setItem('luxuryJCart',JSON.stringify(cart));updateCart()}
+function updateCart(){const qty=cart.reduce((s,x)=>s+x.qty,0);document.querySelector('#cart-count').textContent=qty;document.querySelector('#cart-label').textContent=`(${qty})`;const total=cart.reduce((s,x)=>s+(products.find(p=>p.id===x.id).price*x.qty),0);document.querySelector('#cart-total').textContent=money(total);const el=document.querySelector('#cart-items');el.innerHTML=cart.length?cart.map(x=>{const p=products.find(p=>p.id===x.id);return `<div class="cart-row"><div class="cart-thumb">${bottleMarkup(p,true)}</div><div><h4>${p.name}</h4><p>${money(p.price)}</p><div class="qty"><button data-action="minus" data-id="${p.id}">−</button><span>${x.qty}</span><button data-action="plus" data-id="${p.id}">+</button><button class="remove" data-action="remove" data-id="${p.id}">Remove</button></div></div></div>`}).join(''):'<p class="empty-cart">Your bag is waiting for something beautiful.</p>';el.querySelectorAll('button').forEach(b=>b.onclick=()=>{const item=cart.find(x=>x.id===+b.dataset.id);if(b.dataset.action==='plus')item.qty++;if(b.dataset.action==='minus')item.qty--;if(b.dataset.action==='remove'||item.qty<1)cart=cart.filter(x=>x.id!==+b.dataset.id);save()})}
+function showToast(text){const t=document.querySelector('#toast');t.textContent=text;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
+const shop=document.querySelector('.shop-drawer'),cartPanel=document.querySelector('#cart-panel'),overlay=document.querySelector('#overlay');function openPanel(panel){panel.classList.add('open');overlay.classList.add('show')}function closePanels(){shop.classList.remove('open');cartPanel.classList.remove('open');overlay.classList.remove('show')}
+document.querySelectorAll('a[href="#shop"]').forEach(a=>a.onclick=e=>{e.preventDefault();openPanel(shop)});document.querySelector('#close-shop').onclick=closePanels;document.querySelector('.cart-trigger').onclick=()=>openPanel(cartPanel);document.querySelector('#close-cart').onclick=closePanels;overlay.onclick=closePanels;document.querySelector('#menu-btn').onclick=()=>document.querySelector('#mobile-nav').classList.toggle('open');document.querySelectorAll('.mobile-nav a').forEach(a=>a.onclick=()=>document.querySelector('#mobile-nav').classList.remove('open'));
+document.querySelector('#filters').onclick=e=>{if(e.target.tagName!=='BUTTON')return;document.querySelectorAll('#filters button').forEach(b=>b.classList.remove('active'));e.target.classList.add('active');const f=e.target.dataset.filter;render('#shop-products',f==='all'?products:products.filter(p=>p.category===f))};document.querySelector('#search-input').oninput=e=>{const term=e.target.value.toLowerCase();render('#shop-products',products.filter(p=>(p.name+p.desc).toLowerCase().includes(term)))};document.querySelector('#search-btn').onclick=()=>{openPanel(shop);setTimeout(()=>document.querySelector('#search-input').focus(),400)};document.querySelector('#newsletter-form').onsubmit=e=>{e.preventDefault();showToast('Welcome to the Luxury J. family ✦');e.target.reset()};updateCart();

@@ -1,23 +1,44 @@
-const products=[
- {id:1,name:'Velvet Rose',category:'floral',notes:'Rose · Oud · Amber',description:'A velvety rose wrapped in deep oud and a warm amber trail — romantic, polished and unforgettable.',price:7900,color:'pink',size:'50ml'},
- {id:2,name:'Élan No. 07',category:'fresh',notes:'Bergamot · Iris · Musk',description:'A fresh expression of effortless elegance. Sparkling bergamot meets powdery iris and soft skin musk.',price:8500,color:'clear',size:'50ml'},
- {id:3,name:'Afterglow',category:'woody',notes:'Vanilla · Sandalwood · Tonka',description:'The warmth of a late evening: creamy vanilla, smooth sandalwood and a hint of toasted tonka.',price:8200,color:'gold',size:'50ml'},
- {id:4,name:'Rosé Lumière',category:'floral',notes:'Peony · Lychee · Cashmere',description:'A luminous floral with juicy lychee, delicate peony and a soft cashmere dry-down.',price:7600,color:'pink',size:'50ml'},
- {id:5,name:'Noir Santal',category:'woody',notes:'Cedar · Saffron · Leather',description:'Confident and quietly magnetic, with smoky cedar, golden saffron and supple leather.',price:8900,color:'clear',size:'75ml'},
- {id:6,name:'Mélange',category:'fresh',notes:'Neroli · Tea · White Musk',description:'A clean, modern veil of neroli and green tea, softened with luminous white musk.',price:7300,color:'gold',size:'50ml'},
- {id:7,name:'Jardin Secret',category:'floral',notes:'Jasmine · Tuberose · Vanilla',description:'A moonlit garden in bloom — creamy jasmine and tuberose with a tender vanilla finish.',price:8100,color:'pink',size:'50ml'},
- {id:8,name:'Sillage',category:'woody',notes:'Oud · Patchouli · Vetiver',description:'A refined, long-lasting signature built around exceptional oud and earthy vetiver.',price:9500,color:'gold',size:'75ml'}
-];
-let cart=JSON.parse(localStorage.getItem('luxuryJCart')||'[]');let activeFilter='all';let query='';
-const money=n=>`PKR ${n.toLocaleString('en-PK')}`;
-function bottle(color,withLabel=true){return `<div class="bottle bottle-${color}"><div class="cap"></div><div class="bottle-glass">${withLabel?'<span class="bottle-label">LUXURY<br><b>J.</b></span>':''}</div></div>`}
-function renderProducts(){const grid=document.getElementById('product-grid');const visible=products.filter(p=>(activeFilter==='all'||p.category===activeFilter)&&(!query||`${p.name} ${p.notes}`.toLowerCase().includes(query.toLowerCase())));grid.innerHTML=visible.length?visible.map(p=>`<article class="product-card"><div class="product-visual"><button class="quick-view" data-quick="${p.id}">Quick View</button>${bottle(p.color)}</div><h3>${p.name}</h3><p>${p.notes}</p><strong>${money(p.price)}</strong><button class="add-btn" data-add="${p.id}">Add to bag +</button></article>`).join(''):'<p>No fragrances found. Try another search.</p>'}
-function save(){localStorage.setItem('luxuryJCart',JSON.stringify(cart));renderCart();document.getElementById('cart-count').textContent=cart.reduce((a,i)=>a+i.qty,0)}
-function add(id,qty=1){const p=products.find(x=>x.id===id),item=cart.find(x=>x.id===id);item?item.qty+=qty:cart.push({id,qty});save();openCart()}
-function renderCart(){const box=document.getElementById('cart-items'),count=cart.reduce((a,i)=>a+i.qty,0),total=cart.reduce((a,i)=>a+i.qty*products.find(p=>p.id===i.id).price,0);document.getElementById('drawer-count').textContent=`(${count})`;document.getElementById('cart-total').textContent=money(total);box.innerHTML=cart.length?cart.map(i=>{const p=products.find(x=>x.id===i.id);return `<div class="cart-item"><div class="cart-item-visual">${bottle(p.color,false)}</div><div class="cart-item-info"><h4>${p.name}</h4><p>${p.size} · ${money(p.price)}</p><div class="qty"><button data-minus="${p.id}">−</button><span>${i.qty}</span><button data-plus="${p.id}">+</button><button class="close-btn" data-remove="${p.id}" aria-label="Remove">×</button></div></div><span class="cart-item-price">${money(p.price*i.qty)}</span></div>`}).join(''):'<div class="empty-cart"><p>Your bag is waiting to be filled.</p><a class="text-link" href="#shop" id="continue-shopping">Explore fragrances →</a></div>'}
-function openCart(){document.getElementById('cart-drawer').classList.add('open');document.getElementById('overlay').classList.add('show')};function closeCart(){document.getElementById('cart-drawer').classList.remove('open');document.getElementById('overlay').classList.remove('show')}
-function showModal(id){const p=products.find(x=>x.id===id);document.getElementById('modal-content').innerHTML=`<div class="modal-product"><div class="modal-visual">${bottle(p.color)}</div><div><p class="eyebrow">LUXURY J. · ${p.category.toUpperCase()}</p><h2>${p.name}</h2><strong class="price">${money(p.price)}</strong><p>${p.description}</p><div class="notes">${p.notes.split(' · ').map(n=>`<span>${n}</span>`).join('')}</div><small>${p.size} Eau de Parfum</small><div class="qty-select"><label>Quantity</label><input type="number" id="modal-qty" value="1" min="1"></div><button class="btn btn-dark" data-modal-add="${p.id}">Add to Bag <span>→</span></button></div></div>`;document.getElementById('product-modal').classList.add('show');document.getElementById('overlay').classList.add('show')}
-function closeModal(){document.getElementById('product-modal').classList.remove('show');document.getElementById('overlay').classList.remove('show')}
-document.addEventListener('click',e=>{const addBtn=e.target.closest('[data-add]'),quick=e.target.closest('[data-quick]');if(addBtn)add(+addBtn.dataset.add);if(quick)showModal(+quick.dataset.quick);if(e.target.closest('#cart-toggle'))openCart();if(e.target.closest('#cart-close'))closeCart();if(e.target.id==='overlay'){closeCart();closeModal()}if(e.target.closest('#modal-close'))closeModal();if(e.target.closest('[data-modal-add]')){const b=e.target.closest('[data-modal-add]');add(+b.dataset.modalAdd,+document.getElementById('modal-qty').value);closeModal()}if(e.target.closest('[data-remove]')){cart=cart.filter(i=>i.id!==+e.target.closest('[data-remove]').dataset.remove);save()}if(e.target.closest('[data-plus]')){cart.find(i=>i.id===+e.target.closest('[data-plus]').dataset.plus).qty++;save()}if(e.target.closest('[data-minus]')){const i=cart.find(i=>i.id===+e.target.closest('[data-minus]').dataset.minus);i.qty--;if(i.qty<1)cart=cart.filter(x=>x!==i);save()}if(e.target.closest('#continue-shopping'))closeCart();if(e.target.closest('#checkout-btn')){if(!cart.length)return alert('Your bag is empty.');alert('Thank you! Checkout is ready — please contact hello@luxuryj.pk to complete your Cash on Delivery order.')}});
-document.getElementById('filters').addEventListener('click',e=>{if(e.target.tagName==='BUTTON'){document.querySelectorAll('#filters button').forEach(b=>b.classList.remove('active'));e.target.classList.add('active');activeFilter=e.target.dataset.filter;renderProducts()}});document.getElementById('search-input').addEventListener('input',e=>{query=e.target.value;renderProducts()});document.getElementById('newsletter-form').addEventListener('submit',e=>{e.preventDefault();document.getElementById('newsletter-message').textContent='Welcome to the family — watch your inbox.';e.target.reset()});document.querySelector('.menu-toggle').addEventListener('click',()=>document.querySelector('.main-nav').classList.toggle('mobile-open'));
-renderProducts();renderCart();
+const API_URL='https://v2.jokeapi.dev/joke/Any?type=twopart,single&safe-mode';
+let served=0;
+const button=document.querySelector('#new-joke-button');
+const content=document.querySelector('#joke-content');
+const category=document.querySelector('#category');
+const loader=document.querySelector('#loader');
+const errorMessage=document.querySelector('#error-message');
+const count=document.querySelector('#joke-count');
+const copyButton=document.querySelector('#copy-button');
+let currentJoke='';
+
+function setLoading(isLoading){
+  loader.hidden=!isLoading;
+  button.disabled=isLoading;
+  errorMessage.hidden=true;
+}
+function showJoke(data){
+  currentJoke=data.type==='single'?data.joke:`${data.setup}\n\n${data.delivery}`;
+  content.innerHTML=data.type==='single'
+    ?`<div class="emoji">🤣</div><p class="joke-text">${escapeHtml(data.joke)}</p>`
+    :`<div class="emoji">😄</div><p class="joke-text">${escapeHtml(data.setup)}</p><p class="delivery">${escapeHtml(data.delivery)}</p>`;
+  category.textContent=`${data.category.toUpperCase()} · ${data.type==='single'?'ONE-LINER':'TWO-PART'}`;
+  served+=1;
+  count.textContent=`${served} joke${served===1?'':'s'} served`;
+}
+function escapeHtml(value){const div=document.createElement('div');div.textContent=value;return div.innerHTML}
+async function getJoke(){
+  setLoading(true);
+  try{
+    const response=await fetch(API_URL,{headers:{Accept:'application/json'}});
+    if(!response.ok)throw new Error('Request failed');
+    const data=await response.json();
+    if(data.error)throw new Error(data.message||'API error');
+    showJoke(data);
+  }catch(error){
+    errorMessage.hidden=false;
+    category.textContent='TEMPORARILY OFFLINE';
+  }finally{setLoading(false)}
+}
+button.addEventListener('click',getJoke);
+copyButton.addEventListener('click',async()=>{
+  if(!currentJoke)return;
+  try{await navigator.clipboard.writeText(currentJoke);copyButton.textContent='✓';setTimeout(()=>copyButton.textContent='⧉',1400)}catch{copyButton.textContent='!'}
+});

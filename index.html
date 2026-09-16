@@ -1,43 +1,40 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Luxury J. — discover premium perfumes in Pakistan, crafted to leave a lasting impression. Shop luxury fragrances online with Cash on Delivery." />
-  <meta name="keywords" content="Luxury Perfume, Luxury Perfumes Pakistan, Perfume Online Pakistan, Premium Perfumes, Luxury J Perfume" />
-  <meta name="theme-color" content="#f7eee9" />
-  <title>Luxury J. | Luxury Perfumes Pakistan</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A playful random joke generator powered by the JokeAPI. Discover a fresh joke with one click.">
+  <title>Laugh Lounge | Random Joke Generator</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="announcement">Complimentary delivery on orders over <strong>PKR 8,000</strong> <span>•</span> Cash on Delivery available nationwide</div>
-  <header class="site-header" id="top">
-    <button class="icon-btn menu-toggle" aria-label="Open menu">☰</button>
-    <a class="logo" href="#home" aria-label="Luxury J home"><span>LUXURY</span><b>J.</b></a>
-    <nav class="main-nav" aria-label="Main navigation">
-      <a href="#home">Home</a><a href="#shop">Shop</a><a href="#new">New Arrivals</a><a href="#bestsellers">Best Sellers</a><a href="#about">About Us</a><a href="#contact">Contact</a>
-    </nav>
-    <div class="header-actions"><button class="icon-btn" id="search-toggle" aria-label="Search">⌕</button><button class="cart-button" id="cart-toggle" aria-label="Open cart">Bag <span id="cart-count">0</span></button></div>
+  <div class="orb orb-one"></div><div class="orb orb-two"></div>
+  <header class="topbar">
+    <a class="brand" href="."><span class="brand-mark">☺</span> Laugh Lounge</a>
+    <span class="api-note"><span class="status-dot"></span> Live jokes from JokeAPI</span>
   </header>
-  <main>
-    <section class="hero marble" id="home">
-      <div class="hero-copy fade-up"><p class="eyebrow">THE ART OF PERSONAL SCENT</p><h1>Luxury<br><em>That Lingers.</em></h1><p class="hero-sub">Discover sophisticated fragrances crafted to leave a lasting impression.</p><div class="hero-actions"><a class="btn btn-dark" href="#shop">Shop Now <span>↗</span></a><a class="text-link" href="#about">Explore Collection <span>→</span></a></div><div class="hero-note"><span class="line"></span><span>Made for your most memorable moments</span></div></div>
-      <div class="hero-art fade-in"><div class="halo"></div><div class="hero-bottle bottle-pink"><div class="cap"></div><div class="bottle-glass"><span class="bottle-label">LUXURY<br><b>J.</b></span></div></div><div class="petal petal-one"></div><div class="petal petal-two"></div><div class="hero-stamp">LJ<br><small>EST. 2024</small></div></div>
+  <main class="app-shell">
+    <section class="intro">
+      <p class="eyebrow">YOUR DAILY DOSE OF FUN</p>
+      <h1>Need a little<br><span>laugh?</span></h1>
+      <p class="intro-copy">Press the button and let the internet serve you a fresh joke. No setup, no punchline spoilers.</p>
     </section>
-    <section class="trust-row"><div><strong>01</strong><span>Premium Fragrance<br><small>Curated with intention</small></span></div><div><strong>02</strong><span>Long-Lasting Scents<br><small>Made to stay with you</small></span></div><div><strong>03</strong><span>Elegant Packaging<br><small>Beautifully gift-ready</small></span></div><div><strong>04</strong><span>Cash on Delivery<br><small>Across Pakistan</small></span></div></section>
-    <section class="section" id="shop"><div class="section-heading"><div><p class="eyebrow">THE SIGNATURE EDIT</p><h2>Find your <em>signature.</em></h2></div><a class="text-link desktop-only" href="#shop">View all fragrances →</a></div><div class="shop-toolbar"><div class="filter-tabs" id="filters"><button class="active" data-filter="all">All Scents</button><button data-filter="floral">Floral</button><button data-filter="woody">Woody</button><button data-filter="fresh">Fresh</button></div><div class="search-box" id="search-box"><input id="search-input" type="search" placeholder="Search fragrances..." aria-label="Search fragrances" /></div></div><div class="product-grid" id="product-grid"></div></section>
-    <section class="editorial marble" id="new"><div class="editorial-art"><div class="mini-bottle bottle-gold"><div class="cap"></div><div class="bottle-glass"><span class="bottle-label">LUXURY<br><b>J.</b></span></div></div></div><div class="editorial-copy"><p class="eyebrow">THE NEW CHAPTER</p><h2>Meet the new<br><em>House of J.</em></h2><p>A luminous collection inspired by moonlit gardens, warm skin and the quiet confidence of a signature scent. Three new ways to make an entrance.</p><a href="#shop" class="btn btn-dark">Discover New Arrivals <span>↗</span></a></div></section>
-    <section class="section bestsellers" id="bestsellers"><div class="center-heading"><p class="eyebrow">MOST LOVED</p><h2>Best sellers, <em>beloved.</em></h2><p>Scents our community reaches for again and again.</p></div><div class="best-grid"><div class="best-card"><span class="number">01</span><div class="small-bottle bottle-pink"><div class="cap"></div><div class="bottle-glass"></div></div><div><h3>Velvet Rose</h3><p>Rose · Oud · Amber</p><strong>PKR 7,900</strong></div></div><div class="best-card featured-best"><span class="number">02</span><div class="small-bottle bottle-clear"><div class="cap"></div><div class="bottle-glass"></div></div><div><h3>Élan No. 07</h3><p>Bergamot · Iris · Musk</p><strong>PKR 8,500</strong></div></div><div class="best-card"><span class="number">03</span><div class="small-bottle bottle-gold"><div class="cap"></div><div class="bottle-glass"></div></div><div><h3>Afterglow</h3><p>Vanilla · Sandalwood · Tonka</p><strong>PKR 8,200</strong></div></div></div></section>
-    <section class="about marble" id="about"><div class="about-copy"><p class="eyebrow">OUR STORY</p><h2>A little luxury,<br><em>every day.</em></h2><p>Luxury J. was born from a simple belief: the right fragrance can turn an ordinary moment into a memory. We create expressive scents for people who move through the world with quiet confidence.</p><p>From first note to final ribbon, every detail is considered — premium ingredients, thoughtful presentation and a sense of occasion made in Pakistan.</p><a class="text-link" href="#contact">More about Luxury J. →</a></div><div class="about-quote"><span>“</span><blockquote>Fragrance is the<br>invisible finishing touch.</blockquote><small>— THE HOUSE OF J.</small></div></section>
-    <section class="reviews section"><div class="center-heading"><p class="eyebrow">KIND WORDS</p><h2>Worn & <em>loved.</em></h2></div><div class="review-grid"><article><div class="stars">★★★★★</div><p>“The packaging feels like opening a beautiful gift, and Velvet Rose lasts all day. It has become my signature for evenings.”</p><strong>Ayesha R.</strong><small>Lahore · Verified purchase</small></article><article><div class="stars">★★★★★</div><p>“Élan No. 07 is so refined — fresh at first and then wonderfully warm. I get compliments every time I wear it.”</p><strong>Hira M.</strong><small>Karachi · Verified purchase</small></article><article><div class="stars">★★★★★</div><p>“A genuinely premium local brand. The scent, delivery and attention to detail were all exceptional.”</p><strong>Omar K.</strong><small>Islamabad · Verified purchase</small></article></div></section>
-    <section class="newsletter marble" id="contact"><div><p class="eyebrow">A NOTE FROM US</p><h2>Join the Luxury J.<br><em>Family.</em></h2><p>Be the first to discover new scents, private offers and stories from the House.</p></div><form id="newsletter-form"><label for="newsletter-email">Your email address</label><div class="input-row"><input id="newsletter-email" type="email" placeholder="you@example.com" required><button class="btn btn-dark" type="submit">Subscribe <span>→</span></button></div><small id="newsletter-message"></small></form></section>
+    <section class="joke-card" aria-live="polite">
+      <div class="card-top"><span class="category-pill" id="category">READY WHEN YOU ARE</span><button class="icon-button" id="copy-button" title="Copy joke" aria-label="Copy joke">⧉</button></div>
+      <div class="joke-content" id="joke-content">
+        <div class="emoji">😂</div>
+        <p class="hint">Your next laugh is just one click away.</p>
+      </div>
+      <div class="loader" id="loader" hidden><span></span><span></span><span></span></div>
+      <div class="card-footer"><span id="joke-count">0 jokes served</span><button class="new-joke-button" id="new-joke-button">Tell me a joke <span>↗</span></button></div>
+      <p class="error-message" id="error-message" role="alert" hidden>We couldn't fetch a joke right now. Please try again.</p>
+    </section>
+    <section class="tips"><div><span>01</span><p>Every click<br><strong>brings a surprise</strong></p></div><div><span>02</span><p>Safe for<br><strong>the whole family</strong></p></div><div><span>03</span><p>Powered by<br><strong>JokeAPI</strong></p></div></section>
   </main>
-  <footer><div class="footer-brand"><a class="logo" href="#home"><span>LUXURY</span><b>J.</b></a><p>Luxury fragrances for<br>your most memorable moments.</p><div class="socials"><a href="#" aria-label="Instagram">◎</a><a href="#" aria-label="Facebook">f</a><a href="#" aria-label="Pinterest">p</a></div></div><div><h4>Explore</h4><a href="#shop">Shop all</a><a href="#new">New arrivals</a><a href="#bestsellers">Best sellers</a><a href="#about">Our story</a></div><div><h4>Help</h4><a href="#contact">Contact us</a><a href="#">Delivery & returns</a><a href="#">Privacy policy</a><a href="#">Terms & conditions</a></div><div><h4>Say hello</h4><a href="mailto:hello@luxuryj.pk">hello@luxuryj.pk</a><a href="tel:+923001234567">+92 300 123 4567</a><p>Mon–Sat, 10am–6pm<br>Pakistan</p></div><div class="footer-bottom"><span>© 2024 Luxury J. All rights reserved.</span><span>Made with intention in Pakistan</span></div></footer>
-  <aside class="cart-drawer" id="cart-drawer"><div class="drawer-head"><h2>Your bag <span id="drawer-count">(0)</span></h2><button class="close-btn" id="cart-close">×</button></div><div id="cart-items" class="cart-items"></div><div class="cart-footer"><div><span>Subtotal</span><strong id="cart-total">PKR 0</strong></div><p>Taxes and delivery calculated at checkout.</p><button class="btn btn-dark full" id="checkout-btn">Proceed to Checkout <span>→</span></button></div></aside><div class="overlay" id="overlay"></div>
-  <div class="product-modal" id="product-modal"><button class="close-btn" id="modal-close">×</button><div id="modal-content"></div></div>
+  <footer><span>Made for better moods.</span><span>JokeAPI provides the laughs · <a href="https://jokeapi.dev/" target="_blank" rel="noreferrer">Learn more</a></span></footer>
   <script src="app.js"></script>
 </body>
 </html>
